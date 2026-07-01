@@ -94,7 +94,6 @@ android {
             isJniDebuggable = false
             versionNameSuffix = "-release"
             renderscriptOptimLevel = 3
-            multiDexEnabled = true
 
             manifestPlaceholders["webuiPermissionId"] = mmrlBaseApplicationId
         }
@@ -116,7 +115,6 @@ android {
             isDebuggable = true
             renderscriptOptimLevel = 0
             isMinifyEnabled = false
-            multiDexEnabled = true
 
             manifestPlaceholders["webuiPermissionId"] = "$mmrlBaseApplicationId.debug"
         }
@@ -252,7 +250,7 @@ dependencies {
     implementation(libs.multiplatform.markdown.renderer.m3)
     implementation(libs.multiplatform.markdown.renderer.android)
     implementation(libs.multiplatform.markdown.renderer.coil3)
-    implementation(libs.androidx.multidex)
+    // implementation(libs.androidx.multidex)
     implementation(libs.dev.rikka.rikkax.parcelablelist)
     implementation(libs.lib.zoomable)
     implementation(libs.process.phoenix)
