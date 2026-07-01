@@ -22,12 +22,21 @@ class HiddenPackageManager(
         )
     }
 
+    // Android 17
+    private val useLongFlags: Boolean by lazy {
+        BuildCompat.atLeastT && IPackageManager::class.java.declaredMethods.any { method ->
+            method.name == "getInstalledPackages" &&
+            method.parameterTypes.size == 2 &&
+            method.parameterTypes[0] == Long::class.javaPrimitiveType
+        }
+    }
+
     fun getApplicationInfo(
         packageName: String,
         flags: Int,
         userId: Int,
     ): ApplicationInfo =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.getApplicationInfo(packageName, flags.toLong(), userId)
         } else {
             packageManager.getApplicationInfo(packageName, flags, userId)
@@ -38,7 +47,7 @@ class HiddenPackageManager(
         flags: Int,
         userId: Int,
     ): PackageInfo =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.getPackageInfo(packageName, flags.toLong(), userId)
         } else {
             packageManager.getPackageInfo(packageName, flags, userId)
@@ -49,7 +58,7 @@ class HiddenPackageManager(
         flags: Int,
         userId: Int,
     ): Int =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.getPackageUid(packageName, flags.toLong(), userId)
         } else {
             packageManager.getPackageUid(packageName, flags, userId)
@@ -59,7 +68,7 @@ class HiddenPackageManager(
         flags: Int,
         userId: Int,
     ): List<PackageInfo> =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.getInstalledPackages(flags.toLong(), userId)
         } else {
             packageManager.getInstalledPackages(flags, userId)
@@ -69,7 +78,7 @@ class HiddenPackageManager(
         flags: Int,
         userId: Int,
     ): List<ApplicationInfo> =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.getInstalledApplications(flags.toLong(), userId)
         } else {
             packageManager.getInstalledApplications(flags, userId)
@@ -104,7 +113,7 @@ class HiddenPackageManager(
         flags: Int,
         userId: Int,
     ): List<ResolveInfo> =
-        if (BuildCompat.atLeastT) {
+        if (useLongFlags) {
             packageManager.queryIntentActivities(intent, resolvedType, flags.toLong(), userId)
         } else {
             packageManager.queryIntentActivities(intent, resolvedType, flags, userId)
